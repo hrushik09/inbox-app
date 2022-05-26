@@ -27,8 +27,4 @@ public class InboxAppApplication {
         Path bundle = astraProperties.getSecureConnectBundle().toPath();
         return builder -> builder.withCloudSecureConnectBundle(bundle);
     }
-
-    @PostConstruct
-    public void init() {
-    }
 }
