@@ -1,6 +1,8 @@
 package io.hrushik09.inbox;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
+import io.hrushik09.inbox.email.Email;
+import io.hrushik09.inbox.email.EmailRepository;
 import io.hrushik09.inbox.emaillist.EmailListItem;
 import io.hrushik09.inbox.emaillist.EmailListItemKey;
 import io.hrushik09.inbox.emaillist.EmailListItemRepository;
@@ -27,6 +29,9 @@ public class InboxAppApplication {
     @Autowired
     EmailListItemRepository emailListItemRepository;
 
+    @Autowired
+    EmailRepository emailRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(InboxAppApplication.class, args);
     }
@@ -51,11 +56,19 @@ public class InboxAppApplication {
 
             EmailListItem item = new EmailListItem();
             item.setKey(key);
-            item.setTo(List.of("hrushik09"));
+            item.setTo(List.of("hrushik09", "test1", "abcd"));
             item.setSubject("This is a message " + i);
             item.setUnread(true);
 
             emailListItemRepository.save(item);
+
+            Email email = new Email();
+            email.setId(key.getTimeUUID());
+            email.setFrom("hrushik09");
+            email.setSubject(item.getSubject());
+            email.setBody("This is email body " + i);
+            email.setTo(item.getTo());
+            emailRepository.save(email);
         }
     }
 }
