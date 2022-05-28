@@ -52,7 +52,7 @@ public class InboxAppApplication {
             EmailListItem item = new EmailListItem();
             item.setKey(key);
             item.setTo(List.of("hrushik09"));
-            item.setSubject("Sending a message " + i);
+            item.setSubject("This is a message " + i);
             item.setUnread(true);
 
             emailListItemRepository.save(item);

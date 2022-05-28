@@ -62,7 +62,20 @@
     </nav>
 
     <main>
-        <p>Email list</p>
+        <div class="card" th:if="${emailList}">
+            <div class="card-header">Inbox</div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a th:each="message : ${emailList}" href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" th:text="${message.subject}">List group item heading</h5>
+                            <small th:text="${message.agoTimeString}">agoTimeString</small>
+                        </div>
+                        <p class="mb-1" th:text="${message.to}">to</p>
+                    </a>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>

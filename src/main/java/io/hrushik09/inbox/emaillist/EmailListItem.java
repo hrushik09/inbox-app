@@ -1,5 +1,6 @@
 package io.hrushik09.inbox.emaillist;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -20,6 +21,9 @@ public class EmailListItem {
 
     @CassandraType(type = CassandraType.Name.BOOLEAN)
     private boolean isUnread;
+
+    @Transient
+    private String agoTimeString;
 
     public EmailListItemKey getKey() {
         return key;
@@ -51,5 +55,13 @@ public class EmailListItem {
 
     public void setUnread(boolean unread) {
         isUnread = unread;
+    }
+
+    public String getAgoTimeString() {
+        return agoTimeString;
+    }
+
+    public void setAgoTimeString(String agoTimeString) {
+        this.agoTimeString = agoTimeString;
     }
 }
