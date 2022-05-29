@@ -70,7 +70,7 @@
             <div class="card-body">
                 <div class="list-group">
                     <a th:each="message : ${emailList}"
-                       th:href="@{'/emails/' + ${message.key.timeUUID}}" class="list-group-item list-group-item-action">
+                       th:href="@{'/emails/' + ${message.key.timeUUID} + '?folder=' + currentFolder}" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" th:text="${message.subject}">List group item heading</h5>
                             <small th:text="${message.agoTimeString}">agoTimeString</small>

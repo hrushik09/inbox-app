@@ -52,6 +52,7 @@ public class InboxController {
         if (!StringUtils.hasText(folder)) {
             folder = "Inbox";
         }
+        model.addAttribute("currentFolder", folder);
         List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);
         PrettyTime prettyTime = new PrettyTime();
         emailList.stream()
