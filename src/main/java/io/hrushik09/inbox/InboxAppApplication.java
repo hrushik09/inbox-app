@@ -43,5 +43,7 @@ public class InboxAppApplication {
         for (int i = 0; i < 10; i++) {
             emailService.sendEmail("hrushik09", List.of("hrushik09", "abc"), "Hello " + i, "body " + i);
         }
+
+        emailService.sendEmail("abc", List.of("def", "abc"), "Hello", "body");
     }
 }

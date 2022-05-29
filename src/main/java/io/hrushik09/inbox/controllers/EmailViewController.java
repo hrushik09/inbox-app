@@ -52,6 +52,7 @@ public class EmailViewController {
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
+        model.addAttribute("userName", principal.getAttribute("name"));
 
         Optional<Email> optionalEmail = emailRepository.findById(id);
         if (optionalEmail.isEmpty()) {
@@ -60,6 +61,11 @@ public class EmailViewController {
 
         Email email = optionalEmail.get();
         String toIds = String.join(", ", email.getTo());
+
+        // Check if user is allowed to see the mail
+        if (!userId.equals(email.getFrom()) && !email.getTo().contains(userId)) {
+            return "redirect:/";
+        }
 
         model.addAttribute("email", email);
         model.addAttribute("toIds", toIds);
