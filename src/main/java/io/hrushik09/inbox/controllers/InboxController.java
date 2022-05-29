@@ -31,9 +31,6 @@ public class InboxController {
     @Autowired
     private EmailListItemRepository emailListItemRepository;
 
-    @Autowired
-    private UnreadEmailStatsRepository unreadEmailStatsRepository;
-
     @GetMapping(value = "/")
     public String homePage(@RequestParam(required = false) String folder, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
@@ -52,7 +49,6 @@ public class InboxController {
         if (!StringUtils.hasText(folder)) {
             folder = "Inbox";
         }
-        model.addAttribute("currentFolder", folder);
         List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);
         PrettyTime prettyTime = new PrettyTime();
         emailList.stream()
