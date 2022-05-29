@@ -3,9 +3,7 @@ package io.hrushik09.inbox.controllers;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import io.hrushik09.inbox.emaillist.EmailListItem;
 import io.hrushik09.inbox.emaillist.EmailListItemRepository;
-import io.hrushik09.inbox.folders.Folder;
-import io.hrushik09.inbox.folders.FolderRepository;
-import io.hrushik09.inbox.folders.FolderService;
+import io.hrushik09.inbox.folders.*;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class InboxController {
@@ -32,6 +31,9 @@ public class InboxController {
     @Autowired
     private EmailListItemRepository emailListItemRepository;
 
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
+
     @GetMapping(value = "/")
     public String homePage(@RequestParam(required = false) String folder, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
@@ -44,6 +46,7 @@ public class InboxController {
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
+        model.addAttribute("stats", folderService.mapCountToLabels(userId));
 
         // fetch messages
         if (!StringUtils.hasText(folder)) {
