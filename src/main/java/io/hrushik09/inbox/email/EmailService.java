@@ -55,4 +55,19 @@ public class EmailService {
         item.setUnread(true);
         return item;
     }
+
+    public boolean doesHaveAccess(Email email, String userId) {
+        return userId.equals(email.getFrom()) || email.getTo().contains(userId);
+    }
+
+    public String getReplySubject(String subject) {
+        return "Re: " + subject;
+    }
+
+    public String getReplyBody(Email email) {
+        return "\n\n\n-----------------------------------------\n" +
+                "From: " + email.getFrom() + "\n" +
+                "To: " + email.getTo() + "\n\n" +
+                email.getBody();
+    }
 }

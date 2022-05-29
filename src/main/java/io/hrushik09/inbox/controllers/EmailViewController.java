@@ -2,6 +2,7 @@ package io.hrushik09.inbox.controllers;
 
 import io.hrushik09.inbox.email.Email;
 import io.hrushik09.inbox.email.EmailRepository;
+import io.hrushik09.inbox.email.EmailService;
 import io.hrushik09.inbox.emaillist.EmailListItem;
 import io.hrushik09.inbox.emaillist.EmailListItemKey;
 import io.hrushik09.inbox.emaillist.EmailListItemRepository;
@@ -40,6 +41,9 @@ public class EmailViewController {
     @Autowired
     private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping(value = "/emails/{id}")
     public String emailView(@PathVariable UUID id, @RequestParam String folder, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
@@ -63,7 +67,7 @@ public class EmailViewController {
         String toIds = String.join(", ", email.getTo());
 
         // Check if user is allowed to see the mail
-        if (!userId.equals(email.getFrom()) && !email.getTo().contains(userId)) {
+        if (!emailService.doesHaveAccess(email, userId)) {
             return "redirect:/";
         }
 
